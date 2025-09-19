@@ -2,9 +2,10 @@ export interface IUsuario {
     id: string;
     nome: string;
     renda: number;
+    orcamentoDiario: number;
 }
 
-export interface Itransacoes {
+export interface ITransacoes {
     id: string;
     nome: string;
     valor: number;

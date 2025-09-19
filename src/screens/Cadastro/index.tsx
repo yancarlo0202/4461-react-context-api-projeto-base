@@ -17,11 +17,11 @@ import { IUsuario } from "../../types/index.ts";
 import { criarUsuario } from "../../api/index.js";
 
 const Cadastro = () => {
-  const [form, setForm] = useState<Omit<IUsuario, "id">>({
+  const [form, setForm] = useState<Omit<IUsuario, "id" | "orcamentoDiario">>({
     nome: "",
     renda: 0,
   });
-
+  
   const aoDigitarNoCampoTexto = (campo: "nome" | "renda", valor: string) => {
     setForm((prev) => ({ ...prev, [campo]: valor }));
   };
