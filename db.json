@@ -5,7 +5,32 @@
       "nome": "Yan Carlo",
       "renda": "797,98",
       "orcamentoDiario": null
+    },
+    {
+      "id": "7ccc",
+      "nome": "Yan Carlo",
+      "renda": "797,98",
+      "orcamentoDiario": null
     }
   ],
-  "transacoes": []
+  "transacoes": [
+    {
+      "id": "9531",
+      "nome": "SSD",
+      "valor": 600,
+      "tipo": "despesa",
+      "categoria": "Despesa",
+      "data": "2025-09-12",
+      "userId": "8800"
+    },
+    {
+      "id": "e090",
+      "nome": "Salário",
+      "valor": 5000,
+      "tipo": "receita",
+      "categoria": "Salário",
+      "data": "2025-09-01",
+      "userId": "8800"
+    }
+  ]
 }

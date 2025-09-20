@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { ITransacoes, IUsuario } from '../types'
-import { criarTransacao, criarUsuario, obterTransacaoes, obterUsuario } from '../api';
+import { criarTransacao, criarUsuario, obterTransacoes, obterUsuario } from '../api';
 
 interface AppContextType {
     usuario: IUsuario | null;
     criaUsuario: (usuario: Omit<IUsuario, "id" | "orcamentoDiario">) => Promise<void>
     transacoes: ITransacoes[];
-    criaTransacao: (novaTransacao: Omit<ITransacoes, "id">) => Promise<void>
+    criaTransacao: (novaTransacao: Omit<ITransacoes, "id" | "userId">) => Promise<void>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined)
@@ -18,7 +18,7 @@ const AppProvider = ({children}: {children: React.ReactNode}) => {
   const carregarDadosUsuarios = async () => {
     try {
         const usuarios = await obterUsuario();
-        const transacoes = await obterTransacaoes();
+        const transacoes = await obterTransacoes();
         if (usuarios.length > 0) {
             setUsuario(usuarios[0]);
             setTransacoes(transacoes);
@@ -41,10 +41,18 @@ const AppProvider = ({children}: {children: React.ReactNode}) => {
     }
   }
 
-  const criaTransacao = async (novaTransacao: Omit<ITransacoes, "id" | "orcamentoDiario" >) => {
+  const criaTransacao = async (novaTransacao: Omit<ITransacoes, "id" | "userId" >) => {
   try {
-    const transacaoCriada = await criarTransacao(novaTransacao);
-    setTransacoes((prev) => [...prev, transacaoCriada]);
+    if (!usuario) {
+      throw new Error(
+        "Não podemos criar trasnsações sem um usário associado"
+      );
+    }
+    const { transacao, novoOrcamentoDiario } = await criarTransacao(novaTransacao, usuario);
+    setTransacoes((prev) => [...prev, transacao]);
+    setUsuario((prev) =>
+      prev ? { ...prev, orcamentoDiario: novoOrcamentoDiario } : null
+    );
   } catch (err) {
     console.error(err);
   }
